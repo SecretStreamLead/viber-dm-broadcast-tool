@@ -1,0 +1,1 @@
+"""Thin handlers — translate transport input into service calls."""
