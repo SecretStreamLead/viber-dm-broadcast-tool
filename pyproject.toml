@@ -1,0 +1,71 @@
+[project]
+name = "viber-dm-broadcast-tool"
+version = "0.6.2"
+description = "Service-oriented Viber DM broadcast tool for Windows desktop — bulk DM dispatch, account rotation, rate-limit pacing, delivery telemetry."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "viber-dm-broadcast-tool maintainers" }]
+keywords = ["viber", "dm", "broadcast", "spammer", "outreach", "desktop", "windows"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Environment :: Win32 (MS Windows)",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Communications :: Chat",
+  "Topic :: Internet",
+]
+
+dependencies = [
+  "httpx>=0.27,<0.29",
+  "pydantic>=2.7,<3",
+  "tenacity>=8.3,<10",
+  "typer>=0.12,<0.14",
+  "rich>=13.7,<14",
+  "pyyaml>=6.0,<7",
+  "python-dotenv>=1.0,<2",
+  "sqlalchemy>=2.0,<3",
+  "keyring>=25.2,<26",
+]
+
+[project.optional-dependencies]
+gui = ["flet>=0.24,<0.26"]
+dev = [
+  "pytest>=8.2,<9",
+  "pytest-asyncio>=0.23,<0.25",
+  "respx>=0.21,<0.23",
+  "ruff>=0.6,<0.8",
+  "mypy>=1.10,<2",
+]
+
+[project.scripts]
+viber-broadcast = "viber_broadcast.cli:app"
+
+[project.entry-points."viber_broadcast.adapters"]
+viber-desktop = "viber_broadcast.adapters.viber_desktop:ViberDesktopAdapter"
+
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["viber_broadcast"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "ASYNC", "S"]
+ignore = ["S101"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_unused_ignores = true
+disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
